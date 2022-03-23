@@ -7,7 +7,7 @@ from backend.categories import Category
 class Product(Model):
     name = CharField(max_length=256)
     price = DecimalField(decimal_places=2, max_digits=20)
-    quantity = PositiveIntegerField()
+    quantity = PositiveIntegerField(default=0)
     category = ForeignKey(Category, on_delete=CASCADE)
     created = DateTimeField(auto_now_add=True)
     updated = DateTimeField(auto_now=True)
