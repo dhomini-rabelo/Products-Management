@@ -1,8 +1,10 @@
 from backend.Api.serializers.products import ProductSerializer
 from backend.products import Product
+from Fast.django.api.views.filter import FilterView
+from ..actions.objects.products import product_filters
 from rest_framework import generics
-from rest_framework.views import APIView
-from rest_framework.response import Response
+
+
 
 
 
@@ -11,10 +13,10 @@ class ProductCreateAndListView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
 
 
-class FilterProductView(APIView):
-    def get(self, request):
-        serializer = ProductSerializer(Product.objects.all(), many=True)
-        return Response(serializer.data)
+class FilterProductView(FilterView):
+    serializer_class = ProductSerializer
+    filter_obj = product_filters
+    model = Product
 
 
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):

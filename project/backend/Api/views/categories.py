@@ -1,8 +1,9 @@
 from backend.Api.serializers.categories import CategorySerializer
 from backend.categories import Category
+from ..actions.objects.categories import category_filters
+from Fast.django.api.views.filter import FilterView
 from rest_framework import generics
-from rest_framework.views import APIView
-from rest_framework.response import Response
+
 
 
 class CategoryCreateAndListView(generics.ListCreateAPIView):
@@ -10,9 +11,10 @@ class CategoryCreateAndListView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
 
 
-class FilterCategoryView(APIView):
-    def get(self, request):
-        return Response(Category.objects.all())
+class FilterCategoryView(FilterView):
+    serializer_class = CategorySerializer
+    filter_obj = category_filters
+    model = Category
 
 
 class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
