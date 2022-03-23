@@ -5,3 +5,6 @@ from django.db.models import (Model, CharField, DateTimeField, TextField, EmailF
 class Category(Model):
     name = CharField(max_length=256)
     created = DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
