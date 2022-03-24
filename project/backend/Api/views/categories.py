@@ -4,19 +4,28 @@ from ..actions.objects.categories import category_filters
 from Fast.django.api.views.filter import FilterView
 from rest_framework import generics
 from Fast.django.decorators.cache.api import control_cache_page, global_cache_page
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.utils.decorators import method_decorator
+from django.shortcuts import redirect
+
 
 
 class CategoryCreateAndListView(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    permission_classes = IsAuthenticatedOrReadOnly,
 
     @method_decorator(global_cache_page(10))
     def get(self, request):
         return super().get(request)
 
+    def post(self, request):
+        super().post(request)
+        return redirect(request.get_full_path())
+
 
 class FilterCategoryView(FilterView):
+    permission_classes = IsAuthenticatedOrReadOnly,
     serializer_class = CategorySerializer
     filter_obj = category_filters
     model = Category
