@@ -14,8 +14,8 @@ class ProductCreateAndListView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
 
     @method_decorator(global_cache_page(10))
-    def get(self, request, pk):
-        return super().get(request, pk)
+    def get(self, request):
+        return super().get(request)
 
 
 class FilterProductView(FilterView):
@@ -24,8 +24,8 @@ class FilterProductView(FilterView):
     model = Product
 
     @method_decorator(global_cache_page(10))
-    def get(self, request, pk):
-        return super().get(request, pk)
+    def get(self, request):
+        return super().get(request)
 
 
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):

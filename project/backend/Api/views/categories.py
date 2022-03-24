@@ -12,8 +12,8 @@ class CategoryCreateAndListView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
 
     @method_decorator(global_cache_page(10))
-    def get(self, request, pk):
-        return super().get(request, pk)
+    def get(self, request):
+        return super().get(request)
 
 
 class FilterCategoryView(FilterView):
@@ -22,8 +22,8 @@ class FilterCategoryView(FilterView):
     model = Category
 
     @method_decorator(global_cache_page(10))
-    def get(self, request, pk):
-        return super().get(request, pk)
+    def get(self, request):
+        return super().get(request)
 
 
 class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
