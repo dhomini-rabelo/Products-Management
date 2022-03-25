@@ -48,7 +48,7 @@ class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
     
     def put(self, request, pk):
         response = super().put(request, pk)
-        renew(request.get_full_path())
+        cache.set(request.get_full_path(), response.data, None)
         return response
 
     def delete(self, request, pk):

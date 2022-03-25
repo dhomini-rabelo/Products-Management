@@ -1,8 +1,8 @@
+from django.conf import settings
 from Fast.django.decorators.cache.api import control_cache_page, global_cache_page
 from backend.Api.serializers.products import ProductSerializer
 from backend.products import Product
 from Fast.django.api.views.filter import FilterView
-from backend.products.actions.app.renew_product import renew_product_api
 from ..actions.objects.products import product_filters
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
@@ -10,6 +10,8 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import redirect
 from django.core.cache import cache
 from Fast.utils.worker import renew
+from django.http import HttpResponseRedirect
+from rest_framework.response import Response
 
 
 class ProductCreateAndListView(generics.ListCreateAPIView):
@@ -48,7 +50,7 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def put(self, request, pk):
         response = super().put(request, pk)
-        renew(request.get_full_path())
+        cache.set(request.get_full_path(), response.data, None)
         return response
 
     def delete(self, request, pk):
