@@ -10,8 +10,11 @@ from random import randint
 from pprint import pprint
 
 
-class TestCategoryListApi(TestCase):
 
+
+
+
+class TestCategoryListApi(TestCase):
 
     def create_models(self):      
         self.categories, products = [], []
@@ -58,7 +61,7 @@ class TestCategoryListApi(TestCase):
             serializer.data
         )
 
-    def test_create_user_without_login(self):
+    def test_create_product_without_login(self):
         post_request = self.client.post('/api/products', data = {
             'name' : 'Test Product',
             'price' : Decimal(f'{randint(1, 500)}00.50'),
@@ -67,7 +70,7 @@ class TestCategoryListApi(TestCase):
         })
         self.assertEqual(post_request.status_code, 403)
 
-    def test_create_user_with_login(self):
+    def test_create_product_with_login(self):
         self.client.login(username='test', password='testing')
         post_request = self.client.post('/api/products', data = {
             'name' : 'Test Product',
