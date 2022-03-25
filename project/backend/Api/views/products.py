@@ -12,7 +12,7 @@ from django.shortcuts import redirect
 
 class ProductCreateAndListView(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
-    queryset = Product.objects.all()
+    queryset = Product.objects.order_by('id')
     permission_classes = IsAuthenticatedOrReadOnly,
 
     @method_decorator(global_cache_page(10))
