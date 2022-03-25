@@ -12,6 +12,6 @@ def apply_filters(Model, filters: dict, values: dict):
 
     return {
         'status': 'success',
-        'model': Model.objects.filter(**filter_query),
+        'model': Model.objects.filter(**filter_query).order_by('id'),
     } 
     

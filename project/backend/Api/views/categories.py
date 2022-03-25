@@ -7,12 +7,14 @@ from Fast.django.decorators.cache.api import control_cache_page, global_cache_pa
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django.utils.decorators import method_decorator
 from django.shortcuts import redirect
+from django.core.cache import cache
+from Fast.utils.worker import renew
 
 
 
 class CategoryCreateAndListView(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
-    queryset = Category.objects.all()
+    queryset = Category.objects.order_by('id')
     permission_classes = IsAuthenticatedOrReadOnly,
 
     @method_decorator(global_cache_page(10))
@@ -37,9 +39,19 @@ class FilterCategoryView(FilterView):
 
 class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CategorySerializer
-    queryset = Category.objects.all()
+    queryset = Category.objects.order_by('id')
     permission_classes = IsAuthenticated,
 
-    @method_decorator(control_cache_page(30))
+    @method_decorator(control_cache_page(5))
     def get(self, request, pk):
         return super().get(request, pk)
+    
+    def put(self, request, pk):
+        response = super().put(request, pk)
+        renew(request.get_full_path())
+        return response
+
+    def delete(self, request, pk):
+        response = super().delete(request, pk)
+        cache.set(request.get_full_path(), None, None)
+        return response
