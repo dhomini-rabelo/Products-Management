@@ -4,7 +4,7 @@ from backend.products import Product
 from Fast.django.api.views.filter import FilterView
 from ..actions.objects.products import product_filters
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django.utils.decorators import method_decorator
 from django.shortcuts import redirect
 
@@ -38,13 +38,10 @@ class FilterProductView(FilterView):
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
+    permission_classes = IsAuthenticated,
 
     @method_decorator(control_cache_page(30))
     def get(self, request, pk):
         return super().get(request, pk)
-
-    # def get(self, request, pk):
-    #     return super().get(request, pk)
-
     
         
