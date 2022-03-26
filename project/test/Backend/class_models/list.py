@@ -35,3 +35,7 @@ class TestModelDataListApi(TestCase):
         )
         self.user.set_password('testing')
         self.user.save()
+
+    def login(self):
+        self.client.login(username='test', password='testing')
+        
