@@ -6,6 +6,7 @@
 
 <li>Paginação</li>
 <li>Autenticação</li>
+<li>Cache</li>
 
 <h2 style="margin-top: 30px;">🏷️ Modelagem do banco de dados</h2>
 
